@@ -1,4 +1,4 @@
-unit module DBD::SQL-92;
+unit module DBD::SQL92;
 
 use DBIish;
 
