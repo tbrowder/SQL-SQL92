@@ -1,8 +1,8 @@
 use v6;
 use Test;
 
-use Proc::More :ALL;
+use SQL::SQL92 :ALL;
 
 plan 1;
 
-use-ok 'Proc::More';
+use-ok 'SQL::SQL92';
