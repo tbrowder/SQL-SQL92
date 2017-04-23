@@ -18,16 +18,16 @@ use DBIish;
 
 sub drop-table($dbh, $table) is export(:drop-table) {
     my $sth = $dbh.do(qq:to/STATEMENT/);
-        DROP TABLE IF EXISTS $table
-        STATEMENT
+    DROP TABLE IF EXISTS $table
+    STATEMENT
 } # drop-table
 
 sub key-exists($dbh, $table, $keycol, $keyval) is export(:key-exists) {
     my $sth = $dbh.prepare(qq:to/STATEMENT/);
-        SELECT *
-        FROM $table
-        WHERE $keycol = "$keyval"
-        STATEMENT
+    SELECT *
+    FROM $table
+    WHERE $keycol = "$keyval"
+    STATEMENT
 
     $sth.execute;
     my @vals = $sth.row;
@@ -41,10 +41,10 @@ sub key-exists($dbh, $table, $keycol, $keyval) is export(:key-exists) {
 
 sub get-col-value($dbh, $table, $colname, $keycol, $keyval) is export(:get-col-value) {
     my $sth = $dbh.prepare(qq:to/STATEMENT/);
-        SELECT $colname
-        FROM $table
-        WHERE $keycol = "$keyval"
-        STATEMENT
+    SELECT $colname
+    FROM $table
+    WHERE $keycol = "$keyval"
+    STATEMENT
 
     $sth.execute;
     my @vals = $sth.row;
@@ -55,3 +55,38 @@ sub get-col-value($dbh, $table, $colname, $keycol, $keyval) is export(:get-col-v
 
     return $val;
 } # get-col-value
+
+=begin pod
+sub table-exists($dbh, $table) is export(:table-exists) {
+    my $sth = $dbh.prepare(qq:to/STATEMENT/);
+    SELECT *
+    FROM $table
+    IF EXISTS TABLE $table
+    STATEMENT
+
+    $sth.execute;
+    my @vals = $sth.row;
+    my $table-exists = @vals ?? shift @vals !! '';
+
+    # always clean up after an execute
+    $sth.finish;
+
+    return $table-exists;
+} # table-exists
+=end pod
+
+sub dump-table($dbh, $table) is export(:dump-table) {
+    my $sth = $dbh.prepare(qq:to/STATEMENT/);
+    SELECT *
+    FROM $table
+    STATEMENT
+
+    $sth.execute;
+
+    my @rows = $sth.allrows;
+
+    # always clean up after an execute
+    $sth.finish;
+
+    return @rows;
+}
