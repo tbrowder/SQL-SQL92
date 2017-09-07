@@ -5,3 +5,6 @@ Provides general functions for an RDBMS.
 # SYSTEM REQUIREMENTS
 
 + SQLite3
+
++ PostgreSQL [optional]
+
