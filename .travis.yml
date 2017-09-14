@@ -27,7 +27,8 @@ before_script:
     # for my testing
     - psql -c 'create user sql92;' -U postgres
     - psql -c 'create database sql92;' -U postgres
-    - psql -U postgres -c 'create extension postgis;'
+    # for later: need to install package postgis
+    #- psql -U postgres -c 'create extension postgis;'
 
 install:
     - rakudobrew build-zef
