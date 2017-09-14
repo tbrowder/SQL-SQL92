@@ -30,7 +30,7 @@ my $db   = 'sql92'; # must be defined in .travis.yml
 my $user = 'sql92';
 
 my $exe = 'psql';
-my $cmd = "$exe -f $sqlf -U $user";
+my $cmd = "$exe -d sql92 -f $sqlf -U $user";
 shell $cmd;
 
 my $debug = 1;

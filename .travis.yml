@@ -1,7 +1,6 @@
 # note this file should provide much of the services and before_install as DBIsh
 services:
     - postgresql
-    - sqlite
     - mysql
 
 sudo: false
@@ -25,7 +24,7 @@ before_script:
     # Pg
     - psql -c 'CREATE DATABASE dbdishtest;' -U postgres
     # for my testing
-    - psql -c 'create user sql92;' -U postgres
+    - psql -c 'create user sql92 ;' -U postgres
     - psql -c 'create database sql92;' -U postgres
     # for later: need to install package postgis
     #- psql -U postgres -c 'create extension postgis;'
