@@ -26,11 +26,11 @@ INSERT INTO two VALUES(1, 'tom');
 HERE
 spurt $sqlf, $sql;
 
-my $db = 'sql92'; # must be same as in .travis.yml
-my $user = 'postgres';
+my $db   = 'sql92'; # must be defined in .travis.yml
+my $user = 'sql92';
 
 my $exe = 'psql';
-my $cmd = "$exe -f $dbf -U $user";
+my $cmd = "$exe -f $sqlf -U $user";
 shell $cmd;
 
 my $debug = 1;
@@ -59,7 +59,7 @@ say "DEBUG: \$ret = '$ret'" if $debug;
 # normally delete tmp files
 END {
     if 1 {
-        unlink $dbf, $sqlf;
+        unlink $sqlf;
     }
 }
 

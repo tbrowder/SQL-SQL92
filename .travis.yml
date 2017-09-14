@@ -1,14 +1,15 @@
+# note this file should provide much of the services and before_install as DBIsh
 services:
     - postgresql
     - sqlite
+    - mysql
 
 sudo: false
 
 language: perl6
 
 perl6:
-    - '2017.07'
-    #- latest
+    - latest
 
 #before_install:
 #    - sudo apt-get -qq update
@@ -16,6 +17,15 @@ perl6:
 
 before_script:
     # note the default postgres user has a blank password
+    # from DBIish
+    # mysql
+    - mysql -e "CREATE DATABASE dbdishtest;" -uroot
+    - mysql -e "CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'testpass';" -uroot
+    - mysql -e "GRANT ALL PRIVILEGES ON dbdishtest.* TO 'testuser'@'localhost';" -uroot
+    # Pg
+    - psql -c 'CREATE DATABASE dbdishtest;' -U postgres
+    # for my testing
+    - psql -c 'create user sql92;' -U postgres
     - psql -c 'create database sql92;' -U postgres
     - psql -U postgres -c 'create extension postgis;'
 
