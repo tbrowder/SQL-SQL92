@@ -5,10 +5,9 @@
     "description" : "Provides functions for SQL",
     "authors"     : [ "github:tbrowder" ],
     "license"     : "Artistic-2.0",
-    "source-url"  : "https://github.com/tbrowder/SQL-SQL92-Perl6/archive/v0.1.0.zip",
+    "source-url"  : "https://github.com/tbrowder/SQL-SQL92-Perl6.git",
     "support"     : {
-        "bugtracker" : "https://github.com/tbrowder/SQL-SQL92-Perl6/issues",
-        "source"     : "https://github.com/tbrowder/SQL-SQL92-Perl6/tree/v0.1.0"
+        "bugtracker" : "https://github.com/tbrowder/SQL-SQL92-Perl6/issues"
     },
     "provides"    : {
         "SQL::SQL92" : "lib/SQL/SQL92.pm6"

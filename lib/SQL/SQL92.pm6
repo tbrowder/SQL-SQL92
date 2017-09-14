@@ -17,19 +17,25 @@ use DBIish;
 #   open-db
 
 sub drop-table($dbh, $table) is export(:drop-table) {
-    my $sth = $dbh.do(qq:to/STATEMENT/);
-    DROP TABLE IF EXISTS $table
-    STATEMENT
-} # drop-table
-
-sub key-exists($dbh, $table, $keycol, $keyval) is export(:key-exists) {
     my $sth = $dbh.prepare(qq:to/STATEMENT/);
-    SELECT *
-    FROM $table
-    WHERE $keycol = "$keyval"
+    DROP TABLE IF EXISTS $table
     STATEMENT
 
     $sth.execute;
+} # drop-table
+
+sub key-exists($dbh, $table, $keycol, $keyval --> Bool) is export(:key-exists) {
+    my $sth = $dbh.prepare(qq:to/STATEMENT/);
+    SELECT * FROM $table WHERE $keycol = "$keyval"
+    STATEMENT
+
+    try { 
+        $sth.execute; 
+    }
+    CATCH {
+        return False; 
+    }
+
     my @vals = $sth.row;
     my $key-exists = @vals ?? True !! False;
 
@@ -56,7 +62,8 @@ sub get-col-value($dbh, $table, $colname, $keycol, $keyval) is export(:get-col-v
     return $val;
 } # get-col-value
 
-=begin pod
+=begin comment
+# this is db-specific
 sub table-exists($dbh, $table) is export(:table-exists) {
     my $sth = $dbh.prepare(qq:to/STATEMENT/);
     SELECT *
@@ -73,7 +80,7 @@ sub table-exists($dbh, $table) is export(:table-exists) {
 
     return $table-exists;
 } # table-exists
-=end pod
+=end comment
 
 sub dump-table($dbh, $table) is export(:dump-table) {
     my $sth = $dbh.prepare(qq:to/STATEMENT/);

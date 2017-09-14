@@ -1,12 +1,22 @@
-# version for 'time'
-sudo: true
+services:
+    - postgresql
+    - sqlite3
+
+sudo: false
+
 language: perl6
+
 perl6:
     - latest
 
-before_install:
-    - sudo apt-get -qq update
-    - sudo apt-get install -y sqlite3
+#before_install:
+#    - sudo apt-get -qq update
+#    - sudo apt-get install -y sqlite3
+
+before_script:
+    # note the default postgres user has a blank password
+    - psql -c 'create database sql92;' -U postgres
+    - psql -U postgres -c 'create extension postgis;'
 
 install:
     - rakudobrew build-zef
