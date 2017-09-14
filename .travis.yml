@@ -1,6 +1,6 @@
 services:
     - postgresql
-    - sqlite3
+    - sqlite
 
 sudo: false
 
