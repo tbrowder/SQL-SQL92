@@ -24,8 +24,8 @@ before_script:
     # Pg
     - psql -c 'CREATE DATABASE dbdishtest;' -U postgres
     # for my testing
-    - psql -c 'create user sql92 ;' -U postgres
-    - psql -c 'create database sql92;' -U postgres
+    - psql -c "create user sql92 password 'sql92' createdb;" -U postgres
+    - psql -c 'create database sql92 owner sql92;' -U postgres
     # for later: need to install package postgis
     #- psql -U postgres -c 'create extension postgis;'
 

@@ -16,12 +16,30 @@ use DBIish;
 #
 #   open-db
 
-sub drop-table($dbh, $table) is export(:drop-table) {
+sub create-table($dbh, Str:D $sql --> Bool) is export(:create-table) {
+    my $sth = $dbh.prepare: $sql;
+
+    $sth.execute;
+    CATCH { return False }
+
+    # always clean up after an execute
+    $sth.finish;
+    return True;
+
+} # create-table
+
+sub drop-table($dbh, $table --> Bool) is export(:drop-table) {
     my $sth = $dbh.prepare(qq:to/STATEMENT/);
     DROP TABLE IF EXISTS $table
     STATEMENT
 
     $sth.execute;
+    CATCH { return False }
+
+    # always clean up after an execute
+    $sth.finish;
+    return True;
+
 } # drop-table
 
 sub key-exists($dbh, $table, $keycol, $keyval --> Bool) is export(:key-exists) {
@@ -29,12 +47,8 @@ sub key-exists($dbh, $table, $keycol, $keyval --> Bool) is export(:key-exists) {
     SELECT * FROM $table WHERE $keycol = "$keyval"
     STATEMENT
 
-    try { 
-        $sth.execute; 
-    }
-    CATCH {
-        return False; 
-    }
+    $sth.execute; 
+    CATCH { return False; }
 
     my @vals = $sth.row;
     my $key-exists = @vals ?? True !! False;

@@ -14,11 +14,11 @@ unlink $sqlf;
 
 my $sql = qq:to/HERE/;
 CREATE TABLE one (
-    idx INTEGER PRIMARY KEY,
+    idx INT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL
 );
 CREATE TABLE two (
-    idx INTEGER PRIMARY KEY,
+    idx INT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL
 );
 INSERT INTO one VALUES(1, 'tom');
@@ -28,15 +28,21 @@ spurt $sqlf, $sql;
 
 my $db   = 'sql92'; # must be defined in .travis.yml
 my $user = 'sql92';
+my $pwd  = 'sql92';
 
+=begin comment
 my $exe = 'psql';
-my $cmd = "$exe -d sql92 -f $sqlf -U $user";
+my $cmd = "sudo $exe -f $sqlf $db $user";
 shell $cmd;
+=end comment
 
 my $debug = 1;
 my $dbh;
 my $ret;
-lives-ok { $dbh = DBIish.connect: "Pg", :database($db), :$user, password => '' }, 'open postgresql db';
+lives-ok { $dbh = DBIish.connect: "Pg", :database($db), :$user, password => $pwd }, 'open postgresql db';
+
+lives-ok { $ret = create-table $dbh, $sql }, 'drop-table';
+say "DEBUG: \$ret = '$ret'" if $debug;
 
 #sub drop-table($dbh, $table) is export(:drop-table) {
 lives-ok { $ret = drop-table $dbh, 'one' }, 'drop-table';
