@@ -16,35 +16,30 @@ use DBIish;
 #
 #   open-db
 
-sub create-table($dbh, Str:D $sql --> Bool) is export(:create-table) {
-    my $sth = $dbh.prepare: $sql;
-
-    $sth.execute;
+sub do-cmds($dbh, Str:D $sql --> Bool) is export(:do-cmds) {
+    my $sth = $dbh.do: $sql;
     CATCH { return False }
 
     # always clean up after an execute
     $sth.finish;
     return True;
-
-} # create-table
+} # do-cmds
 
 sub drop-table($dbh, $table --> Bool) is export(:drop-table) {
-    my $sth = $dbh.prepare(qq:to/STATEMENT/);
+    my $sth = $dbh.do(qq:to/STATEMENT/);
     DROP TABLE IF EXISTS $table
     STATEMENT
 
-    $sth.execute;
     CATCH { return False }
 
     # always clean up after an execute
     $sth.finish;
     return True;
-
 } # drop-table
 
 sub key-exists($dbh, $table, $keycol, $keyval --> Bool) is export(:key-exists) {
     my $sth = $dbh.prepare(qq:to/STATEMENT/);
-    SELECT * FROM $table WHERE $keycol = "$keyval"
+    SELECT * FROM $table WHERE $keycol = '$keyval'
     STATEMENT
 
     $sth.execute; 
@@ -55,7 +50,6 @@ sub key-exists($dbh, $table, $keycol, $keyval --> Bool) is export(:key-exists) {
 
     # always clean up after an execute
     $sth.finish;
-
     return $key-exists;
 } # key-exists
 
@@ -63,7 +57,7 @@ sub get-col-value($dbh, $table, $colname, $keycol, $keyval) is export(:get-col-v
     my $sth = $dbh.prepare(qq:to/STATEMENT/);
     SELECT $colname
     FROM $table
-    WHERE $keycol = "$keyval"
+    WHERE $keycol = '$keyval'
     STATEMENT
 
     $sth.execute;
