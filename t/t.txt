@@ -1,0 +1,5 @@
+sub drop-table($dbh, $table) is export(:drop-table) {
+
+sub key-exists($dbh, $table, $keycol, $keyval) is export(:key-exists) {
+
+sub get-col-value($dbh, $table, $colname, $keycol, $keyval) is export(:get-col-value) {

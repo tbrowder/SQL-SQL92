@@ -1,0 +1,4 @@
+psql: FATAL:  Peer authentication failed for user "sql92"
+The spawned command 'psql -f ./t/t.sql -U sql92' exited unsuccessfully (exit code: 2)
+  in block <unit> at t/020-func-tests-postgres.t line 34
+
